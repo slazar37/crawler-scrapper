@@ -1,0 +1,76 @@
+CREATE TABLE category(
+   category_id INT NOT NULL AUTO_INCREMENT,
+   category_name VARCHAR(200) NOT NULL,
+   updateddate TIMESTAMP(14),
+   createddate TIMESTAMP(14),
+   PRIMARY KEY ( category_id ),
+   INDEX(category_name)
+    );
+
+
+#################################################################
+
+CREATE TABLE sub_category(
+   subcategory_id INT NOT NULL AUTO_INCREMENT,
+   subcategory_name VARCHAR(200) NOT NULL,
+   category_id INT,
+   updateddate TIMESTAMP(14),
+   createddate TIMESTAMP(14),
+   PRIMARY KEY ( subcategory_id ),
+   INDEX(category_id),
+   INDEX(subcategory_name),
+   
+  FOREIGN KEY(category_id)
+  REFERENCES category(category_id)
+    );
+
+
+##################################################################
+
+CREATE TABLE crawler_product(
+   product_id INT NOT NULL AUTO_INCREMENT,
+   subcategory_id INT,
+   url  text,
+   name   text,
+   sellPrice varchar(10),
+   listPrice varchar(10),
+   imgSrs  text,
+   product_dimensions varchar(20),
+   item_weight   varchar(120),
+   shipping_weight  varchar(120),
+   ASIN  varchar(50),
+   item_model_number  varchar(50),
+   customer_reviews text,
+   short_description text,
+   page_no int,
+   PRIMARY KEY ( product_id ),
+   INDEX ( subcategory_id ),
+   INDEX (name(255)),
+
+  FOREIGN KEY(subcategory_id)
+  REFERENCES sub_category(subcategory_id)
+    );
+
+##################################################################
+
+
+CREATE TABLE crawler_product_reviews
+(
+review_id INT NOT NULL AUTO_INCREMENT,
+product_id INT,
+pagination_no INT, 
+product_name  VARCHAR(255),
+pagination_url VARCHAR(350),
+comment_author VARCHAR(250),
+author_account VARCHAR(350),
+comment_title VARCHAR(250),
+comment_date VARCHAR(255),
+star_rating VARCHAR(250),
+review_text TEXT,
+
+PRIMARY KEY(review_id),
+INDEX (product_name),
+
+FOREIGN KEY(product_id)
+REFERENCES crawler_product(product_id)
+);
